@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu'
-
+import LoginComponent from '../login-component/LoginComponent';
 
 const styles = {
     root: {
@@ -47,6 +47,7 @@ class StartPageComponent extends React.Component {
                         <Button color="inherit">Login</Button>
                     </Toolbar>
                 </AppBar>
+                <LoginComponent/>
             </div>
         );
     }
@@ -55,4 +56,5 @@ class StartPageComponent extends React.Component {
 StartPageComponent.propTypes = {
     classes: PropTypes.object.isRequired,
 };
+
 export default withStyles(styles)(StartPageComponent)
