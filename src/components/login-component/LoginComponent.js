@@ -10,6 +10,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import LoginService from '../../services/LoginService';
 
 const styles = theme => ({
     main: {
@@ -45,9 +46,34 @@ const styles = theme => ({
 
 class LoginComponent extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
+
+        this.state = {
+            email: '',
+            password: '',
+            fullName: '',
+            phone: ''
+        };
+
+        this.onSubmitTouched = this.onSubmitTouched.bind(this);
     }
 
+    handleInputChange = (event) => {
+        const value = event.target.value;
+        const name = event.target.name;
+
+        this.setState({
+            [name]: value
+        });
+    };
+
+    onSubmitTouched() {
+        LoginService().register(this.state).then(value => {
+            console.log(value);
+        }).catch(err => {
+           console.log(err);
+        });
+    };
 
     render() {
         const { classes } = this.props;
@@ -65,19 +91,19 @@ class LoginComponent extends React.Component {
                     <form className={classes.form}>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="email">Email Address</InputLabel>
-                            <Input id="email" name="email" autoComplete="email" autoFocus />
+                            <Input id="email" name="email" autoComplete="email" autoFocus value={this.state.email} onChange={this.handleInputChange}/>
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="password">Password</InputLabel>
-                            <Input name="password" type="password" id="password" autoComplete="current-password" />
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="name">Full name</InputLabel>
-                            <Input name="name" type="name" id="name"/>
+                            <Input name="password" type="password" id="password" autoComplete="current-password" value={this.state.password} onChange={this.handleInputChange}/>
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="phone">Phone number</InputLabel>
-                            <Input name="phone" type="phone" id="phone"/>
+                            <Input name="phone" type="phone" id="phone" value={this.state.phone} onChange={this.handleInputChange}/>
+                        </FormControl>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="fullName">Full name</InputLabel>
+                            <Input name="fullName" type="text" id="fullName" value={this.state.fullName} onChange={this.handleInputChange}/>
                         </FormControl>
                         <Button
                             type="submit"
@@ -85,6 +111,7 @@ class LoginComponent extends React.Component {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
+                            onClick={this.onSubmitTouched}
                         >
                             Sign Up
                         </Button>
