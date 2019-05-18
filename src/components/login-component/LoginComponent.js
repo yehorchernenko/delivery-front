@@ -10,7 +10,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import LoginService from '../../services/LoginService';
+const update = require('react-addons-update');
+const loginService = require('../../services/LoginService').loginService;
 
 const styles = theme => ({
     main: {
@@ -49,29 +50,34 @@ class LoginComponent extends React.Component {
         super(props);
 
         this.state = {
-            email: '',
-            password: '',
-            fullName: '',
-            phone: ''
+            user: {
+                email: '',
+                password: '',
+                fullName: '',
+                phone: ''
+            }
         };
-
-        this.onSubmitTouched = this.onSubmitTouched.bind(this);
     }
 
     handleInputChange = (event) => {
         const value = event.target.value;
-        const name = event.target.name;
+        const name = event.target.id;
 
-        this.setState({
-            [name]: value
+        const newState = update(this.state, {
+            user: { [name]: {$set: value} }
         });
+        this.setState(newState);
     };
 
-    onSubmitTouched() {
-        LoginService().register(this.state).then(value => {
-            console.log(value);
-        }).catch(err => {
-           console.log(err);
+    onSubmitTouched = async (event) => {
+        event.preventDefault();
+
+        console.log(this.state);
+
+        loginService.register(this.state.user).then(user => {
+            console.log(user);
+        }).catch(error => {
+            console.log(error);
         });
     };
 
@@ -88,22 +94,22 @@ class LoginComponent extends React.Component {
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    <form className={classes.form}>
+                    <form className={classes.form} onSubmit={this.onSubmitTouched}>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="email">Email Address</InputLabel>
-                            <Input id="email" name="email" autoComplete="email" autoFocus value={this.state.email} onChange={this.handleInputChange}/>
+                            <Input id="email" name="email" autoComplete="email" autoFocus value={this.state.user.email} onChange={this.handleInputChange}/>
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="password">Password</InputLabel>
-                            <Input name="password" type="password" id="password" autoComplete="current-password" value={this.state.password} onChange={this.handleInputChange}/>
+                            <Input name="password" type="password" id="password" autoComplete="current-password" value={this.state.user.password} onChange={this.handleInputChange}/>
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="phone">Phone number</InputLabel>
-                            <Input name="phone" type="phone" id="phone" value={this.state.phone} onChange={this.handleInputChange}/>
+                            <Input name="phone" type="phone" id="phone" value={this.state.user.phone} onChange={this.handleInputChange}/>
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="fullName">Full name</InputLabel>
-                            <Input name="fullName" type="text" id="fullName" value={this.state.fullName} onChange={this.handleInputChange}/>
+                            <Input name="fullName" type="text" id="fullName" value={this.state.user.fullName} onChange={this.handleInputChange}/>
                         </FormControl>
                         <Button
                             type="submit"
@@ -111,7 +117,6 @@ class LoginComponent extends React.Component {
                             variant="contained"
                             color="primary"
                             className={classes.submit}
-                            onClick={this.onSubmitTouched}
                         >
                             Sign Up
                         </Button>
