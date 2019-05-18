@@ -69,10 +69,6 @@ class LoginComponent extends React.Component {
         };
     }
 
-    onLogin = (user) => {
-      this.props.onLogin(user);
-    };
-
     handleInputChange = (event) => {
         const value = event.target.value;
         const name = event.target.id;
@@ -88,9 +84,9 @@ class LoginComponent extends React.Component {
 
         console.log(this.state);
 
-        authService.login(this.state.credentials).then(data => {
-            localStorage.setItem('token', data.token);
-            this.onLogin(data.token);
+        authService.login(this.state.credentials).then(response => {
+            localStorage.setItem('token', response.data.token);
+            this.props.onLogin();
         }).catch(error => {
             this.errorToast(error.message);
         });

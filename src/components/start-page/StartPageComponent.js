@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu'
 import RegisterComponent from '../register-component/RegisterComponent';
 import LoginCompoent from '../login-component/LoginComponent';
+import UserProfileComponent from '../user-profile/UserPofileComponent';
 
 const ComponentsEnum = Object.freeze({'Login':1, 'Register':2, 'Profile': 3});
 
@@ -31,21 +32,55 @@ class StartPageComponent extends React.Component {
         this.state = {auth: false, component: ComponentsEnum.Register}
     }
 
-    handleAuth = () => {
-      //this.setState({auth: !this.state.auth})
-        console.log('fuck you')
-    };
+    componentDidMount() {
+        const token = localStorage.getItem('token');
+        if (token !== null && token !== 'undefined') {
+            this.setState({component: ComponentsEnum.Profile});
+        } else {
+            this.setState({component: ComponentsEnum.Login});
+        }
+    }
 
     showLogin = () => {
         this.setState({component: ComponentsEnum.Login});
     };
 
-    onLogin = (token) => {
-        console.log("Logged in successfully" + token);
+    onLogin = () => {
+        this.setState({component: ComponentsEnum.Profile});
     };
 
     showRegister = () => {
         this.setState({component: ComponentsEnum.Register});
+    };
+
+    onAuthButtonTouched = () => {
+        switch(this.state.component) {
+            case ComponentsEnum.Register:
+                this.setState({component: ComponentsEnum.Login});
+                break;
+            case ComponentsEnum.Login:
+                this.setState({component: ComponentsEnum.Register});
+                break;
+            case ComponentsEnum.Profile:
+                localStorage.clear();
+                this.setState({component: ComponentsEnum.Login});
+                break;
+            default:
+                break;
+        }
+    };
+
+    authButtonTitle = () => {
+        switch(this.state.component) {
+            case ComponentsEnum.Register:
+                return 'Login';
+            case ComponentsEnum.Login:
+                return 'Register';
+            case ComponentsEnum.Profile:
+                return 'Log out';
+            default:
+                break;
+        }
     };
 
     currentComponent = () => {
@@ -59,6 +94,8 @@ class StartPageComponent extends React.Component {
                     showRegister={this.showRegister}
                     onLogin={this.onLogin}
                 />);
+            case ComponentsEnum.Profile:
+                return(<UserProfileComponent/>);
             default:
                 return(<div/>)
         }
@@ -76,11 +113,10 @@ class StartPageComponent extends React.Component {
                         <Typography variant="h6" color="inherit" className={classes.grow}>
                             Delivery+
                         </Typography>
-                        <Button color="inherit">Login</Button>
+                        <Button color="inherit" onClick={this.onAuthButtonTouched}>{this.authButtonTitle()}</Button>
                     </Toolbar>
                 </AppBar>
                 <div>{this.currentComponent()}</div>
-
             </div>
         );
     }
