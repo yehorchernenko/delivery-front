@@ -10,8 +10,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { toast } from 'react-toastify';
 const update = require('react-addons-update');
-const loginService = require('../../services/LoginService').loginService;
+const authService = require('../../services/AuthService').authService;
 
 const styles = theme => ({
     main: {
@@ -45,7 +46,18 @@ const styles = theme => ({
     },
 });
 
-class LoginComponent extends React.Component {
+class RegisterComponent extends React.Component {
+    successToast = (msg) => toast.success(msg, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true
+    });
+    errorToast = (msg) => toast.error(msg, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true
+    });
+
     constructor(props) {
         super(props);
 
@@ -74,10 +86,11 @@ class LoginComponent extends React.Component {
 
         console.log(this.state);
 
-        loginService.register(this.state.user).then(user => {
-            console.log(user);
+        authService.register(this.state.user).then(user => {
+            this.successToast('You have successfully registered\nLog in now!');
+            this.props.onLogin();
         }).catch(error => {
-            console.log(error);
+            this.errorToast(error.message);
         });
     };
 
@@ -121,14 +134,15 @@ class LoginComponent extends React.Component {
                             Sign Up
                         </Button>
                     </form>
+                    <Button onClick={this.props.onLogin}>Alreadey have account? Login</Button>
                 </Paper>
             </main>
         );
     }
 }
 
-LoginComponent.propTypes = {
+RegisterComponent.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(LoginComponent)
+export default withStyles(styles)(RegisterComponent)

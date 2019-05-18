@@ -1,7 +1,7 @@
 import Global from '../global';
 import axios from 'axios'
 
-export const loginService = {
+export const authService = {
     register,
 };
 
@@ -12,6 +12,5 @@ async function register(json) {
         data: json,
         headers: {'Content-Type': 'application/json',}
     });
-    //const result = await fetch(`${Global.host}/api/auth/register`, options);
     return result
 }

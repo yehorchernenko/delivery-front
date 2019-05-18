@@ -7,7 +7,9 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu'
-import LoginComponent from '../login-component/LoginComponent';
+import RegisterComponent from '../register-component/RegisterComponent';
+
+const ComponentsEnum = Object.freeze({'Login':1, 'Register':2, 'Profile': 3});
 
 const styles = {
     root: {
@@ -25,12 +27,29 @@ const styles = {
 class StartPageComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {auth: false}
+        this.state = {auth: false, component: ComponentsEnum.Register}
     }
 
     handleAuth = () => {
-      this.setState({auth: !this.state.auth})
+      //this.setState({auth: !this.state.auth})
+        console.log('fuck you')
     };
+
+    onLogin = () => {
+        this.setState({component: ComponentsEnum.Login});
+        console.log('LOOOOOGIn')
+    };
+
+    currentComponent = () => {
+        switch(this.state.component.key) {
+            case ComponentsEnum.Register:
+                return(<RegisterComponent onLogin={this.onLogin}/>)
+            case ComponentsEnum.Login:
+                return(<RegisterComponent onLogin={this.handleAuth}/>)
+            default:
+                return(<RegisterComponent onLogin={this.onLogin}/>)
+        }
+    }
 
     render() {
         const { classes } = this.props;
@@ -47,7 +66,8 @@ class StartPageComponent extends React.Component {
                         <Button color="inherit">Login</Button>
                     </Toolbar>
                 </AppBar>
-                <LoginComponent/>
+                <div>{this.currentComponent()}</div>
+
             </div>
         );
     }

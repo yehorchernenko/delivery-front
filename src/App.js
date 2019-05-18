@@ -1,10 +1,12 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import StartPageComponent from "./components/start-page/StartPageComponent";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure();
 
 function App() {
-  return (
+    return (
     <StartPageComponent/>
   );
 }
