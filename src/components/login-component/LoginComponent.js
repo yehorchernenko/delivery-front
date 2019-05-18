@@ -46,7 +46,7 @@ const styles = theme => ({
     },
 });
 
-class RegisterComponent extends React.Component {
+class LoginComponent extends React.Component {
     successToast = (msg) => toast.success(msg, {
         position: "top-center",
         autoClose: 5000,
@@ -62,21 +62,23 @@ class RegisterComponent extends React.Component {
         super(props);
 
         this.state = {
-            user: {
+            credentials: {
                 email: '',
-                password: '',
-                fullName: '',
-                phone: ''
+                password: ''
             }
         };
     }
+
+    onLogin = (user) => {
+      this.props.onLogin(user);
+    };
 
     handleInputChange = (event) => {
         const value = event.target.value;
         const name = event.target.id;
 
         const newState = update(this.state, {
-            user: { [name]: {$set: value} }
+            credentials: { [name]: {$set: value} }
         });
         this.setState(newState);
     };
@@ -86,9 +88,9 @@ class RegisterComponent extends React.Component {
 
         console.log(this.state);
 
-        authService.register(this.state.user).then(user => {
-            this.successToast('You have successfully registered\nLog in now!');
-            this.props.showLogin();
+        authService.login(this.state.credentials).then(data => {
+            localStorage.setItem('token', data.token);
+            this.onLogin(data.token);
         }).catch(error => {
             this.errorToast(error.message);
         });
@@ -105,24 +107,16 @@ class RegisterComponent extends React.Component {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign up
+                        Sign In
                     </Typography>
                     <form className={classes.form} onSubmit={this.onSubmitTouched}>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="email">Email Address</InputLabel>
-                            <Input id="email" name="email" autoComplete="email" autoFocus value={this.state.user.email} onChange={this.handleInputChange}/>
+                            <Input id="email" name="email" autoComplete="email" autoFocus value={this.state.credentials.email} onChange={this.handleInputChange}/>
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="password">Password</InputLabel>
-                            <Input name="password" type="password" id="password" autoComplete="current-password" value={this.state.user.password} onChange={this.handleInputChange}/>
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="phone">Phone number</InputLabel>
-                            <Input name="phone" type="phone" id="phone" value={this.state.user.phone} onChange={this.handleInputChange}/>
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="fullName">Full name</InputLabel>
-                            <Input name="fullName" type="text" id="fullName" value={this.state.user.fullName} onChange={this.handleInputChange}/>
+                            <Input name="password" type="password" id="password" autoComplete="current-password" value={this.state.credentials.password} onChange={this.handleInputChange}/>
                         </FormControl>
                         <Button
                             type="submit"
@@ -131,18 +125,18 @@ class RegisterComponent extends React.Component {
                             color="primary"
                             className={classes.submit}
                         >
-                            Sign Up
+                            Sign In
                         </Button>
                     </form>
-                    <Button onClick={this.props.showLogin}>Alreadey have account? Login</Button>
+                    <Button onClick={this.props.showRegister}>Don't have an account? Register now!</Button>
                 </Paper>
             </main>
         );
     }
 }
 
-RegisterComponent.propTypes = {
+LoginComponent.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(RegisterComponent)
+export default withStyles(styles)(LoginComponent)

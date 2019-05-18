@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu'
 import RegisterComponent from '../register-component/RegisterComponent';
+import LoginCompoent from '../login-component/LoginComponent';
 
 const ComponentsEnum = Object.freeze({'Login':1, 'Register':2, 'Profile': 3});
 
@@ -35,21 +36,33 @@ class StartPageComponent extends React.Component {
         console.log('fuck you')
     };
 
-    onLogin = () => {
+    showLogin = () => {
         this.setState({component: ComponentsEnum.Login});
-        console.log('LOOOOOGIn')
+    };
+
+    onLogin = (token) => {
+        console.log("Logged in successfully" + token);
+    };
+
+    showRegister = () => {
+        this.setState({component: ComponentsEnum.Register});
     };
 
     currentComponent = () => {
-        switch(this.state.component.key) {
+        switch(this.state.component) {
             case ComponentsEnum.Register:
-                return(<RegisterComponent onLogin={this.onLogin}/>)
+                return(<RegisterComponent
+                    showLogin={this.showLogin}
+                />);
             case ComponentsEnum.Login:
-                return(<RegisterComponent onLogin={this.handleAuth}/>)
+                return(<LoginCompoent
+                    showRegister={this.showRegister}
+                    onLogin={this.onLogin}
+                />);
             default:
-                return(<RegisterComponent onLogin={this.onLogin}/>)
+                return(<div/>)
         }
-    }
+    };
 
     render() {
         const { classes } = this.props;
