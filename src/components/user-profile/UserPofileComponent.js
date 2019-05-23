@@ -1,8 +1,8 @@
-
 import React from "react";
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import List from '@material-ui/core/List';
@@ -13,8 +13,10 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { toast } from 'react-toastify';
+const update = require('react-addons-update');
 const authService = require('../../services/AuthService').authService;
 const orderService = require('../../services/OrderService').orderService;
+const userService = require('../../services/UserService').userService;
 
 const styles = theme => ({
     main: {
@@ -68,7 +70,9 @@ class UserPofileComponent extends React.Component {
         super(props);
 
         this.state = {
+            isEdit: false,
             user: {
+                _id: '',
                 email: '',
                 fullName: '',
                 phone: ''
@@ -90,6 +94,32 @@ class UserPofileComponent extends React.Component {
             this.errorToast(`Order loading error: ${error.message}`);
         });
     }
+
+    handleInputChange = (event) => {
+        const value = event.target.value;
+        const name = event.target.id;
+
+        const newState = update(this.state, {
+            user: { [name]: {$set: value} }
+        });
+        this.setState(newState);
+    };
+
+    onEditTouched = async (event) => {
+        event.preventDefault();
+
+        if (this.state.isEdit) {
+            userService.edit(this.state.user).then(user => {
+                this.successToast('You have successfully updated your profile');
+                this.setState({user: user, isEdit: false})
+            }).catch(error => {
+                this.errorToast(error.message);
+                this.setState({isEdit: false})
+            });
+        } else {
+            this.setState({isEdit: !this.state.isEdit});
+        }
+    };
 
     formattedDate(timestamp) {
         const date = new Date(timestamp);
@@ -116,43 +146,59 @@ class UserPofileComponent extends React.Component {
                     <form className={classes.form}>
                         <FormControl required fullWidth>
                             <TextField
-                                id="fullName-field"
+                                id="fullName"
+                                name="fullName"
                                 label="Full name"
-                                value={this.state.user.fullName}
                                 className={classes.textField}
+                                value={this.state.user.fullName}
+                                onChange={this.handleInputChange}
                                 margin="normal"
                                 InputProps={{
-                                    readOnly: true,
+                                    readOnly: !this.state.isEdit,
                                 }}
                                 variant="filled"
                             />
                         </FormControl>
                         <FormControl required fullWidth>
                             <TextField
-                                id="email-field"
+                                id="email"
+                                name="email"
                                 label="Email:"
                                 value={this.state.user.email}
                                 className={classes.textField}
+                                onChange={this.handleInputChange}
                                 margin="normal"
                                 InputProps={{
-                                    readOnly: true,
+                                    readOnly: !this.state.isEdit,
                                 }}
                                 variant="filled"
                             />
                         </FormControl>
                         <FormControl required fullWidth>
                             <TextField
-                                id="phone-field"
+                                id="phone"
+                                name="phone"
                                 label="Telephone number"
                                 value={this.state.user.phone}
                                 className={classes.textField}
+                                onChange={this.handleInputChange}
                                 margin="normal"
                                 InputProps={{
-                                    readOnly: true,
+                                    readOnly: !this.state.isEdit,
                                 }}
                                 variant="filled"
                             />
                         </FormControl>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            onClick={this.onEditTouched}
+                        >
+                            {this.state.isEdit ? "Submit" : "Edit"}
+                        </Button>
                         <FormControl margin="normal" fullWidth>
                             <Typography variant="h6" className={classes.textField}>
                                 Orders history:
