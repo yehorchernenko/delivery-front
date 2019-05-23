@@ -2,11 +2,8 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -16,8 +13,8 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { toast } from 'react-toastify';
-const update = require('react-addons-update');
 const authService = require('../../services/AuthService').authService;
+const orderService = require('../../services/OrderService').orderService;
 
 const styles = theme => ({
     main: {
@@ -75,22 +72,37 @@ class UserPofileComponent extends React.Component {
                 email: '',
                 fullName: '',
                 phone: ''
-            }
+            },
+            orders: []
         };
     }
 
     componentDidMount() {
         authService.me().then(response => {
-            console.log(response.data)
             this.setState({user: response.data})
         }).catch(error => {
-            this.errorToast(error.message);
-        })
+            this.errorToast(`Profile loading error: ${error.message}`);
+        });
+
+        orderService.my().then(response => {
+            this.setState({orders: response.data})
+        }).catch(error => {
+            this.errorToast(`Order loading error: ${error.message}`);
+        });
+    }
+
+    formattedDate(timestamp) {
+        const date = new Date(timestamp);
+
+        const strArray=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const d = date.getDate();
+        const m = strArray[date.getMonth()];
+        const y = date.getFullYear();
+        return '' + (d <= 9 ? '0' + d : d) + '-' + m + '-' + y;
     }
 
     render() {
         const { classes } = this.props;
-        console.log(this.state.user)
         return(
             <main className={classes.main}>
                 <CssBaseline />
@@ -148,12 +160,12 @@ class UserPofileComponent extends React.Component {
                         </FormControl>
                         <FormControl fullWidth>
                             <List>
-                                <ListItem>
-                                    <ListItemText primary="Order: 1232315" secondary="Jan 7, 2019" />
-                                </ListItem>
-                                <ListItem>
-                                    <ListItemText primary="Order: 1232315" secondary="Jan 19, 2019" />
-                                </ListItem>
+                                {this.state.orders.map(item => {
+                                    return(
+                                        <ListItem key={item._id}>
+                                                <ListItemText primary={`Order: ${item._id}`}  secondary={`Date: ${this.formattedDate(item.info.date)}`} />
+                                        </ListItem>);
+                                })}
                             </List>
                         </FormControl>
                     </form>
