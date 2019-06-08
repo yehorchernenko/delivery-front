@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { toast } from 'react-toastify';
+import { Link, Redirect} from "react-router-dom";
 const update = require('react-addons-update');
 const authService = require('../../services/AuthService').authService;
 
@@ -62,6 +63,7 @@ class LoginComponent extends React.Component {
         super(props);
 
         this.state = {
+            loggedIn: false,
             credentials: {
                 email: '',
                 password: ''
@@ -82,52 +84,55 @@ class LoginComponent extends React.Component {
     onSubmitTouched = async (event) => {
         event.preventDefault();
 
-        console.log(this.state);
-
         authService.login(this.state.credentials).then(response => {
             localStorage.setItem('token', response.data.token);
-            this.props.onLogin();
+            this.setState({loggedIn: true})
         }).catch(error => {
             this.errorToast(error.message);
+            this.setState({loggedIn: true})
         });
     };
 
     render() {
         const { classes } = this.props;
 
-        return(
-            <main className={classes.main}>
-                <CssBaseline />
-                <Paper className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign In
-                    </Typography>
-                    <form className={classes.form} onSubmit={this.onSubmitTouched}>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="email">Email Address</InputLabel>
-                            <Input id="email" name="email" autoComplete="email" autoFocus value={this.state.credentials.email} onChange={this.handleInputChange}/>
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="password">Password</InputLabel>
-                            <Input name="password" type="password" id="password" autoComplete="current-password" value={this.state.credentials.password} onChange={this.handleInputChange}/>
-                        </FormControl>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
+        if (this.state.loggedIn){
+            return (<Redirect to="/profile/my"/>)
+        } else {
+            return(
+                <main className={classes.main}>
+                    <CssBaseline />
+                    <Paper className={classes.paper}>
+                        <Avatar className={classes.avatar}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
                             Sign In
-                        </Button>
-                    </form>
-                    <Button onClick={this.props.showRegister}>Don't have an account? Register now!</Button>
-                </Paper>
-            </main>
-        );
+                        </Typography>
+                        <form className={classes.form} onSubmit={this.onSubmitTouched}>
+                            <FormControl margin="normal" required fullWidth>
+                                <InputLabel htmlFor="email">Email Address</InputLabel>
+                                <Input id="email" name="email" autoComplete="email" autoFocus value={this.state.credentials.email} onChange={this.handleInputChange}/>
+                            </FormControl>
+                            <FormControl margin="normal" required fullWidth>
+                                <InputLabel htmlFor="password">Password</InputLabel>
+                                <Input name="password" type="password" id="password" autoComplete="current-password" value={this.state.credentials.password} onChange={this.handleInputChange}/>
+                            </FormControl>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                            >
+                                Sign In
+                            </Button>
+                        </form>
+                        <Link to="/register">Don't have an account? Register now!</Link>
+                    </Paper>
+                </main>
+            );
+        }
     }
 }
 

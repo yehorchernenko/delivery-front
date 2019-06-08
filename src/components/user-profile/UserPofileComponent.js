@@ -13,6 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { toast } from 'react-toastify';
+import { Link, Redirect} from "react-router-dom";
 const update = require('react-addons-update');
 const authService = require('../../services/AuthService').authService;
 const orderService = require('../../services/OrderService').orderService;
@@ -70,6 +71,7 @@ class UserPofileComponent extends React.Component {
         super(props);
 
         this.state = {
+            auth: true,
             isEdit: false,
             user: {
                 _id: '',
@@ -121,6 +123,13 @@ class UserPofileComponent extends React.Component {
         }
     };
 
+    onLogOutTouched = (event) => {
+        event.preventDefault();
+
+        localStorage.removeItem('token');
+        this.setState({auth: false});
+    };
+
     formattedDate(timestamp) {
         const date = new Date(timestamp);
 
@@ -133,91 +142,105 @@ class UserPofileComponent extends React.Component {
 
     render() {
         const { classes } = this.props;
-        return(
-            <main className={classes.main}>
-                <CssBaseline />
-                <Paper className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Profile
-                    </Typography>
-                    <form className={classes.form}>
-                        <FormControl required fullWidth>
-                            <TextField
-                                id="fullName"
-                                name="fullName"
-                                label="Full name"
-                                className={classes.textField}
-                                value={this.state.user.fullName}
-                                onChange={this.handleInputChange}
-                                margin="normal"
-                                InputProps={{
-                                    readOnly: !this.state.isEdit,
-                                }}
-                                variant="filled"
-                            />
-                        </FormControl>
-                        <FormControl required fullWidth>
-                            <TextField
-                                id="email"
-                                name="email"
-                                label="Email:"
-                                value={this.state.user.email}
-                                className={classes.textField}
-                                onChange={this.handleInputChange}
-                                margin="normal"
-                                InputProps={{
-                                    readOnly: !this.state.isEdit,
-                                }}
-                                variant="filled"
-                            />
-                        </FormControl>
-                        <FormControl required fullWidth>
-                            <TextField
-                                id="phone"
-                                name="phone"
-                                label="Telephone number"
-                                value={this.state.user.phone}
-                                className={classes.textField}
-                                onChange={this.handleInputChange}
-                                margin="normal"
-                                InputProps={{
-                                    readOnly: !this.state.isEdit,
-                                }}
-                                variant="filled"
-                            />
-                        </FormControl>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                            onClick={this.onEditTouched}
-                        >
-                            {this.state.isEdit ? "Submit" : "Edit"}
-                        </Button>
-                        <FormControl margin="normal" fullWidth>
-                            <Typography variant="h6" className={classes.textField}>
-                                Orders history:
-                            </Typography>
-                        </FormControl>
-                        <FormControl fullWidth>
-                            <List>
-                                {this.state.orders.map(item => {
-                                    return(
-                                        <ListItem key={item._id}>
+
+        if (this.state.auth) {
+            return(
+                <main className={classes.main}>
+                    <CssBaseline />
+                    <Paper className={classes.paper}>
+                        <Avatar className={classes.avatar}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            Profile
+                        </Typography>
+                        <form className={classes.form}>
+                            <FormControl required fullWidth>
+                                <TextField
+                                    id="fullName"
+                                    name="fullName"
+                                    label="Full name"
+                                    className={classes.textField}
+                                    value={this.state.user.fullName}
+                                    onChange={this.handleInputChange}
+                                    margin="normal"
+                                    InputProps={{
+                                        readOnly: !this.state.isEdit,
+                                    }}
+                                    variant="filled"
+                                />
+                            </FormControl>
+                            <FormControl required fullWidth>
+                                <TextField
+                                    id="email"
+                                    name="email"
+                                    label="Email:"
+                                    value={this.state.user.email}
+                                    className={classes.textField}
+                                    onChange={this.handleInputChange}
+                                    margin="normal"
+                                    InputProps={{
+                                        readOnly: !this.state.isEdit,
+                                    }}
+                                    variant="filled"
+                                />
+                            </FormControl>
+                            <FormControl required fullWidth>
+                                <TextField
+                                    id="phone"
+                                    name="phone"
+                                    label="Telephone number"
+                                    value={this.state.user.phone}
+                                    className={classes.textField}
+                                    onChange={this.handleInputChange}
+                                    margin="normal"
+                                    InputProps={{
+                                        readOnly: !this.state.isEdit,
+                                    }}
+                                    variant="filled"
+                                />
+                            </FormControl>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                                onClick={this.onEditTouched}
+                            >
+                                {this.state.isEdit ? "Submit" : "Edit"}
+                            </Button>
+                            <FormControl margin="normal" fullWidth>
+                                <Typography variant="h6" className={classes.textField}>
+                                    Orders history:
+                                </Typography>
+                            </FormControl>
+                            <FormControl fullWidth>
+                                <List>
+                                    {this.state.orders.map(item => {
+                                        return(
+                                            <ListItem key={item._id}>
                                                 <ListItemText primary={`Order: ${item._id}`}  secondary={`Date: ${this.formattedDate(item.info.date)}`} />
-                                        </ListItem>);
-                                })}
-                            </List>
-                        </FormControl>
-                    </form>
-                </Paper>
-            </main>
-        );
+                                            </ListItem>);
+                                    })}
+                                </List>
+                            </FormControl>
+                            <Button
+                                fullWidth
+                                variant="outlined"
+                                color="primary"
+                                className={classes.submit}
+                                onClick={this.onLogOutTouched}
+                            >
+                                Log out
+                            </Button>
+                        </form>
+                    </Paper>
+                </main>
+            );
+        } else {
+            return(<Redirect to="/login"/>);
+        }
     }
 }
 
