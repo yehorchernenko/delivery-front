@@ -39,6 +39,5 @@ async function me(json) {
             'x-access-token': token
         }
     });
-    console.log(result);
     return result
 }

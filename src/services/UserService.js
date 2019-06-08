@@ -6,7 +6,6 @@ export const userService = {
 };
 
 async function edit(user) {
-
     const result = await axios( {
         method: 'put',
         url: `${Global.host}/api/users/${user._id}`,

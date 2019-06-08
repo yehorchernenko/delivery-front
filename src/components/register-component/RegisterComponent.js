@@ -84,8 +84,6 @@ class RegisterComponent extends React.Component {
     onSubmitTouched = async (event) => {
         event.preventDefault();
 
-        console.log(this.state);
-
         authService.register(this.state.user).then(user => {
             this.successToast('You have successfully registered\nLog in now!');
             this.props.showLogin();
