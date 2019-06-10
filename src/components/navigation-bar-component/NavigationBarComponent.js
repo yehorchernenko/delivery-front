@@ -29,12 +29,7 @@ const styles = {
 class NavigationBarComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {auth: false }
-    }
-
-    componentDidMount() {
-        const token = localStorage.getItem('token');
-        this.setState({auth: (token !== null && token !== 'undefined')});
+        this.state = {auth: (localStorage.getItem('token') != null)}
     }
 
     authLink = () => {

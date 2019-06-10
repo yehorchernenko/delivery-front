@@ -10,8 +10,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { toast } from 'react-toastify';
-import { Link, Redirect} from "react-router-dom";
+import {toast} from 'react-toastify';
+import {Link, Redirect} from "react-router-dom";
+import NavigationBarComponent from '../navigation-bar-component/NavigationBarComponent';
+
 const update = require('react-addons-update');
 const authService = require('../../services/AuthService').authService;
 
@@ -76,7 +78,7 @@ class LoginComponent extends React.Component {
         const name = event.target.id;
 
         const newState = update(this.state, {
-            credentials: { [name]: {$set: value} }
+            credentials: {[name]: {$set: value}}
         });
         this.setState(newState);
     };
@@ -89,48 +91,53 @@ class LoginComponent extends React.Component {
             this.setState({loggedIn: true})
         }).catch(error => {
             this.errorToast(error.message);
-            this.setState({loggedIn: true})
+            this.setState({loggedIn: false})
         });
     };
 
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
 
-        if (this.state.loggedIn){
+        if (this.state.loggedIn) {
             return (<Redirect to="/profile/my"/>)
         } else {
-            return(
-                <main className={classes.main}>
-                    <CssBaseline />
-                    <Paper className={classes.paper}>
-                        <Avatar className={classes.avatar}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Sign In
-                        </Typography>
-                        <form className={classes.form} onSubmit={this.onSubmitTouched}>
-                            <FormControl margin="normal" required fullWidth>
-                                <InputLabel htmlFor="email">Email Address</InputLabel>
-                                <Input id="email" name="email" autoComplete="email" autoFocus value={this.state.credentials.email} onChange={this.handleInputChange}/>
-                            </FormControl>
-                            <FormControl margin="normal" required fullWidth>
-                                <InputLabel htmlFor="password">Password</InputLabel>
-                                <Input name="password" type="password" id="password" autoComplete="current-password" value={this.state.credentials.password} onChange={this.handleInputChange}/>
-                            </FormControl>
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-                            >
+            return (
+                <div>
+                    <NavigationBarComponent/>
+                    <main className={classes.main}>
+                        <CssBaseline/>
+                        <Paper className={classes.paper}>
+                            <Avatar className={classes.avatar}>
+                                <LockOutlinedIcon/>
+                            </Avatar>
+                            <Typography component="h1" variant="h5">
                                 Sign In
-                            </Button>
-                        </form>
-                        <Link to="/register">Don't have an account? Register now!</Link>
-                    </Paper>
-                </main>
+                            </Typography>
+                            <form className={classes.form} onSubmit={this.onSubmitTouched}>
+                                <FormControl margin="normal" required fullWidth>
+                                    <InputLabel htmlFor="email">Email Address</InputLabel>
+                                    <Input id="email" name="email" autoComplete="email" autoFocus
+                                           value={this.state.credentials.email} onChange={this.handleInputChange}/>
+                                </FormControl>
+                                <FormControl margin="normal" required fullWidth>
+                                    <InputLabel htmlFor="password">Password</InputLabel>
+                                    <Input name="password" type="password" id="password" autoComplete="current-password"
+                                           value={this.state.credentials.password} onChange={this.handleInputChange}/>
+                                </FormControl>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.submit}
+                                >
+                                    Sign In
+                                </Button>
+                            </form>
+                            <Link to="/register">Don't have an account? Register now!</Link>
+                        </Paper>
+                    </main>
+                </div>
             );
         }
     }
