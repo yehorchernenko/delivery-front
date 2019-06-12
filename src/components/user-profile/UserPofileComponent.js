@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {toast} from 'react-toastify';
 import {Redirect} from "react-router-dom";
-import NavigationBarComponent from '../navigation-bar-component/NavigationBarComponent';
+import NavigationBarComponent from '../navigation-bar/NavigationBarComponent';
 
 const update = require('react-addons-update');
 const authService = require('../../services/AuthService').authService;

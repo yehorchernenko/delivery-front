@@ -12,8 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {toast} from 'react-toastify';
 import {Link, Redirect} from "react-router-dom";
-import NavigationBarComponent from '../navigation-bar-component/NavigationBarComponent';
-
+import NavigationBarComponent from '../navigation-bar/NavigationBarComponent';
 const update = require('react-addons-update');
 const authService = require('../../services/AuthService').authService;
 
@@ -49,7 +48,7 @@ const styles = theme => ({
     },
 });
 
-class LoginComponent extends React.Component {
+class RegisterComponent extends React.Component {
     successToast = (msg) => toast.success(msg, {
         position: "top-center",
         autoClose: 5000,
@@ -65,10 +64,12 @@ class LoginComponent extends React.Component {
         super(props);
 
         this.state = {
-            loggedIn: false,
-            credentials: {
+            isRegistered: false,
+            user: {
                 email: '',
-                password: ''
+                password: '',
+                fullName: '',
+                phone: ''
             }
         };
     }
@@ -78,7 +79,7 @@ class LoginComponent extends React.Component {
         const name = event.target.id;
 
         const newState = update(this.state, {
-            credentials: {[name]: {$set: value}}
+            user: {[name]: {$set: value}}
         });
         this.setState(newState);
     };
@@ -86,20 +87,20 @@ class LoginComponent extends React.Component {
     onSubmitTouched = async (event) => {
         event.preventDefault();
 
-        authService.login(this.state.credentials).then(response => {
-            localStorage.setItem('token', response.data.token);
-            this.setState({loggedIn: true})
+        authService.register(this.state.user).then(user => {
+            this.successToast('You have successfully registered\nLog in now!');
+            this.setState({isRegistered: true})
         }).catch(error => {
             this.errorToast(error.message);
-            this.setState({loggedIn: false})
+            this.setState({isRegistered: false})
         });
     };
 
     render() {
         const {classes} = this.props;
 
-        if (this.state.loggedIn) {
-            return (<Redirect to="/profile/my"/>)
+        if (this.state.isRegistered) {
+            return (<Redirect to="/login"/>)
         } else {
             return (
                 <div>
@@ -111,18 +112,28 @@ class LoginComponent extends React.Component {
                                 <LockOutlinedIcon/>
                             </Avatar>
                             <Typography component="h1" variant="h5">
-                                Sign In
+                                Sign up
                             </Typography>
                             <form className={classes.form} onSubmit={this.onSubmitTouched}>
                                 <FormControl margin="normal" required fullWidth>
                                     <InputLabel htmlFor="email">Email Address</InputLabel>
                                     <Input id="email" name="email" autoComplete="email" autoFocus
-                                           value={this.state.credentials.email} onChange={this.handleInputChange}/>
+                                           value={this.state.user.email} onChange={this.handleInputChange}/>
                                 </FormControl>
                                 <FormControl margin="normal" required fullWidth>
                                     <InputLabel htmlFor="password">Password</InputLabel>
                                     <Input name="password" type="password" id="password" autoComplete="current-password"
-                                           value={this.state.credentials.password} onChange={this.handleInputChange}/>
+                                           value={this.state.user.password} onChange={this.handleInputChange}/>
+                                </FormControl>
+                                <FormControl margin="normal" required fullWidth>
+                                    <InputLabel htmlFor="phone">Phone number</InputLabel>
+                                    <Input name="phone" type="phone" id="phone" value={this.state.user.phone}
+                                           onChange={this.handleInputChange}/>
+                                </FormControl>
+                                <FormControl margin="normal" required fullWidth>
+                                    <InputLabel htmlFor="fullName">Full name</InputLabel>
+                                    <Input name="fullName" type="text" id="fullName" value={this.state.user.fullName}
+                                           onChange={this.handleInputChange}/>
                                 </FormControl>
                                 <Button
                                     type="submit"
@@ -131,10 +142,10 @@ class LoginComponent extends React.Component {
                                     color="primary"
                                     className={classes.submit}
                                 >
-                                    Sign In
+                                    Sign Up
                                 </Button>
                             </form>
-                            <Link to="/register">Don't have an account? Register now!</Link>
+                            <Link to="/login">Already have account? Login</Link>
                         </Paper>
                     </main>
                 </div>
@@ -143,8 +154,8 @@ class LoginComponent extends React.Component {
     }
 }
 
-LoginComponent.propTypes = {
+RegisterComponent.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(LoginComponent)
+export default withStyles(styles)(RegisterComponent)

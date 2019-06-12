@@ -2,7 +2,8 @@ import Global from '../global';
 import axios from 'axios'
 
 export const orderService = {
-    my
+    my,
+    byID
 };
 
 async function my() {
@@ -14,6 +15,18 @@ async function my() {
         headers: {
             'Content-Type': 'application/json',
             'x-access-token': token
+        }
+    });
+    return result
+}
+
+async function byID(ID) {
+
+    const result = await axios( {
+        method: 'get',
+        url: `${Global.host}/api/order/byID/${ID}`,
+        headers: {
+            'Content-Type': 'application/json'
         }
     });
     return result
