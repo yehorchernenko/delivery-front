@@ -21,6 +21,11 @@ const styles = theme => ({
             marginRight: 'auto',
         },
     },
+    title: {
+        marginTop: theme.spacing.unit * 3,
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+    },
     textField: {
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
@@ -58,7 +63,7 @@ class OrderDetailView extends React.Component {
 
     componentDidMount() {
         //sender
-        userService.get(this.props.order.data.sender).then(response => {
+        userService.get(this.props.order.sender).then(response => {
             this.setState({sender: response.data});
         }).catch(error => {
             this.props.onError(error);
@@ -66,7 +71,7 @@ class OrderDetailView extends React.Component {
         });
 
         //receiver
-        userService.get(this.props.order.data.receiver).then(response => {
+        userService.get(this.props.order.receiver).then(response => {
             this.setState({receiver: response.data});
         }).catch(error => {
             this.props.onError(error);
@@ -90,8 +95,8 @@ class OrderDetailView extends React.Component {
             <div>
                 <main className={classes.main}>
                     <CssBaseline/>
-                        <Typography component="h1" variant="h5">
-                            Profile
+                        <Typography component="h1" variant="h5" className={classes.title}>
+                            Order Detail:
                         </Typography>
                         <form className={classes.form}>
                             <FormControl required fullWidth>
@@ -134,30 +139,42 @@ class OrderDetailView extends React.Component {
                                 <TextField
                                     id="email"
                                     name="email"
-                                    label="Email:"
-                                    value={"EMAI:"}
+                                    label="Shipping info:"
+                                    value={`${this.props.order.senderAddress.city} -> ${this.props.order.receiverAddress.city}`}
                                     className={classes.textField}
-                                    onChange={this.handleInputChange}
                                     margin="normal"
                                     InputProps={{
                                         readOnly: true,
                                     }}
-                                    variant="filled"
+                                    variant="outlined"
                                 />
                             </FormControl>
                             <FormControl required fullWidth>
                                 <TextField
-                                    id="phone"
-                                    name="phone"
-                                    label="Telephone number"
-                                    value={""}
+                                    id="email"
+                                    name="email"
+                                    label="Delivery date:"
+                                    value={this.formattedDate(this.props.order.info.date)}
                                     className={classes.textField}
-                                    onChange={this.handleInputChange}
                                     margin="normal"
                                     InputProps={{
                                         readOnly: true,
                                     }}
-                                    variant="filled"
+                                    variant="outlined"
+                                />
+                            </FormControl>
+                            <FormControl required fullWidth>
+                                <TextField
+                                    id="email"
+                                    name="email"
+                                    label="Delivery date:"
+                                    value={`${this.props.order.info.price} UAH.`}
+                                    className={classes.textField}
+                                    margin="normal"
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    variant="outlined"
                                 />
                             </FormControl>
                         </form>
