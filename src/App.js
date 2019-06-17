@@ -8,6 +8,7 @@ import LoginCompoent from './components/login/LoginComponent';
 import UserProfileComponent from './components/user-profile/UserPofileComponent';
 import SearchOrderComponent from './components/search-order/SearchOrderComponent';
 import MainPageComponent from './components/main-page-component/MainPageComponent';
+import OrderDetailComponent from './components/order-detail-component/OrderDetailComponent';
 toast.configure();
 
 class App extends React.Component {
@@ -20,6 +21,7 @@ class App extends React.Component {
                 <Route path="/login" component={LoginCompoent}/>
                 <Route path="/profile/my" component={UserProfileComponent}/>
                 <Route path="/orders/search" component={SearchOrderComponent}/>
+                <Route path="/orders/byID/:id" component={OrderDetailComponent}/>
             </Router>
         );
     };

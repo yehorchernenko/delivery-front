@@ -91,6 +91,7 @@ class OrderDetailView extends React.Component {
 
     render() {
         const {classes} = this.props;
+
         return (
             <div>
                 <main className={classes.main}>

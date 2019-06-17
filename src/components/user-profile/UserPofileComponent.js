@@ -94,6 +94,7 @@ class UserPofileComponent extends React.Component {
 
         orderService.my().then(response => {
             this.setState({orders: response.data})
+            console.log(response.data)
         }).catch(error => {
             this.errorToast(`Order loading error: ${error.message}`);
         });
@@ -142,8 +143,17 @@ class UserPofileComponent extends React.Component {
         return '' + (d <= 9 ? '0' + d : d) + '-' + m + '-' + y;
     }
 
+    redirectToOrderDetails = (item) => {
+        console.log(item.target);
+        this.setState({selectedOrderID: item});
+    };
+
     render() {
         const {classes} = this.props;
+
+        if (this.state.selectedOrderID != null) {
+            return (<Redirect to={`/orders/byID/${this.state.selectedOrderID}`}/>);
+        }
 
         if (this.state.auth) {
             return (
@@ -223,7 +233,7 @@ class UserPofileComponent extends React.Component {
                                     <List>
                                         {this.state.orders.map(item => {
                                             return (
-                                                <ListItem key={item._id}>
+                                                <ListItem key={item._id} onClick={() => this.redirectToOrderDetails(item._id)}>
                                                     <ListItemText primary={`Order: ${item._id}`}
                                                                   secondary={`Date: ${this.formattedDate(item.info.date)}`}/>
                                                 </ListItem>);
