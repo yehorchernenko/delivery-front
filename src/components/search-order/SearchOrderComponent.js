@@ -79,19 +79,24 @@ class SearchOrderComponent extends React.Component {
     onSubmitTouched = async (event) => {
         event.preventDefault();
 
-        orderService.byID(this.state.orderID).then(order => {
+        await orderService.byID(this.state.orderID).then(order => {
             this.setState({foundOrder: order});
         }).catch(error => {
             this.errorToast(error.message);
+            this.setState({foundOrder: null});
         })
     };
 
     orderDetailView = () => {
         if (this.state.foundOrder != null) {
-            return (<OrderDetailView/>);
+            return (<OrderDetailView order={this.state.foundOrder} onError={this.onError}/>);
         } else {
             return (<div/>);
         }
+    };
+
+    onError = (error) => {
+        this.errorToast(error.message);
     };
 
     render() {

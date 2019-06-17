@@ -1,3 +1,3 @@
 export default class Global {
-    static host = 'http://192.168.1.3:3030';
+    static host = 'http://192.168.1.6:3030';
 }

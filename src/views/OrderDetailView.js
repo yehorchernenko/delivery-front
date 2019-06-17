@@ -7,6 +7,8 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
+const userService = require('../services/UserService').userService;
+
 const styles = theme => ({
     main: {
         width: 'auto',
@@ -49,13 +51,27 @@ class OrderDetailView extends React.Component {
         super(props);
 
         this.state = {
-            user: {
-                _id: '',
-                email: '',
-                fullName: '',
-                phone: ''
-            },
-        };
+            sender: null,
+            receiver: null
+        }
+    }
+
+    componentDidMount() {
+        //sender
+        userService.get(this.props.order.data.sender).then(response => {
+            this.setState({sender: response.data});
+        }).catch(error => {
+            this.props.onError(error);
+            this.setState({sender: null})
+        });
+
+        //receiver
+        userService.get(this.props.order.data.receiver).then(response => {
+            this.setState({receiver: response.data});
+        }).catch(error => {
+            this.props.onError(error);
+            this.setState({receiver: null})
+        })
     }
 
     formattedDate(timestamp) {
@@ -80,17 +96,38 @@ class OrderDetailView extends React.Component {
                         <form className={classes.form}>
                             <FormControl required fullWidth>
                                 <TextField
-                                    id="fullName"
-                                    name="fullName"
-                                    label="Full name"
+                                    multiline
+                                    id="sender"
+                                    name="sender"
+                                    label="Sender:"
                                     className={classes.textField}
-                                    value={this.state.user.fullName}
-                                    onChange={this.handleInputChange}
+                                    value={this.state.sender != null ?
+                                    `Name: ${this.state.sender.fullName}\nPhone: ${this.state.sender.phone}\nEmail: ${this.state.sender.email}`
+                                    : "None"
+                                    }
                                     margin="normal"
                                     InputProps={{
                                         readOnly: true,
                                     }}
-                                    variant="filled"
+                                    variant="outlined"
+                                />
+                            </FormControl>
+                            <FormControl required fullWidth>
+                                <TextField
+                                    multiline
+                                    id="receiver"
+                                    name="receiver"
+                                    label="Receiver:"
+                                    className={classes.textField}
+                                    value={this.state.receiver != null ?
+                                        `Name: ${this.state.receiver.fullName}\nPhone: ${this.state.receiver.phone}\nEmail: ${this.state.receiver.email}`
+                                        : "None"
+                                    }
+                                    margin="normal"
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    variant="outlined"
                                 />
                             </FormControl>
                             <FormControl required fullWidth>
@@ -98,7 +135,7 @@ class OrderDetailView extends React.Component {
                                     id="email"
                                     name="email"
                                     label="Email:"
-                                    value={this.state.user.email}
+                                    value={"EMAI:"}
                                     className={classes.textField}
                                     onChange={this.handleInputChange}
                                     margin="normal"
@@ -113,7 +150,7 @@ class OrderDetailView extends React.Component {
                                     id="phone"
                                     name="phone"
                                     label="Telephone number"
-                                    value={this.state.user.phone}
+                                    value={""}
                                     className={classes.textField}
                                     onChange={this.handleInputChange}
                                     margin="normal"
