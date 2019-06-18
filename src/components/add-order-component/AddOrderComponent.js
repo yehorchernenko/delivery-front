@@ -13,8 +13,12 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import {toast} from 'react-toastify';
 import {Link, Redirect} from "react-router-dom";
 import NavigationBarComponent from '../navigation-bar/NavigationBarComponent';
+import Select from '@material-ui/core/Select';
+import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
+
 const update = require('react-addons-update');
 const authService = require('../../services/AuthService').authService;
+const cities = require('../../utils/cities');
 
 const styles = theme => ({
     main: {
@@ -48,7 +52,7 @@ const styles = theme => ({
     },
 });
 
-class RegisterComponent extends React.Component {
+class AddOrderComponent extends React.Component {
     successToast = (msg) => toast.success(msg, {
         position: "top-center",
         autoClose: 5000,
@@ -65,6 +69,12 @@ class RegisterComponent extends React.Component {
 
         this.state = {
             isRegistered: false,
+            order: {
+                senderAddress: {
+                    region: {city: []},
+                    city: ""
+                }
+            },
             user: {
                 email: '',
                 password: '',
@@ -96,6 +106,27 @@ class RegisterComponent extends React.Component {
         });
     };
 
+    senderRegionChanged = event => {
+        this.setState({
+            order: {
+                senderAddress: {
+                    region: event.target.value
+                }
+            }
+        })
+    };
+
+    senderCityChanged = event => {
+        this.setState({
+            order: {
+                senderAddress: {
+                    region: this.state.order.senderAddress.region,
+                    city: event.target.value
+                }
+            }
+        })
+    };
+
     render() {
         const {classes} = this.props;
 
@@ -116,10 +147,36 @@ class RegisterComponent extends React.Component {
                             </Typography>
                             <form className={classes.form} onSubmit={this.onSubmitTouched}>
                                 <FormControl margin="normal" required fullWidth>
-                                    <InputLabel htmlFor="email">Email Address</InputLabel>
-                                    <Input id="email" name="email" autoComplete="email" autoFocus
-                                           value={this.state.user.email} onChange={this.handleInputChange}/>
+                                    <InputLabel htmlFor="senderRegion">Sender region:</InputLabel>
+                                    <Select
+                                        value={this.state.order.senderAddress.region}
+                                        inputProps={{
+                                            name: 'senderRegion',
+                                            id: 'senderRegion-id',
+                                        }}
+                                        onChange={this.senderRegionChanged}
+                                    >
+                                        {cities.regions.map(region => {
+                                            return (<MenuItem value={region} key={region._name}>{region._name}</MenuItem>)
+                                        })}
+                                    </Select>
                                 </FormControl>
+                                <FormControl margin="normal" required fullWidth>
+                                    <InputLabel htmlFor="senderCity">Sender city:</InputLabel>
+                                    <Select
+                                        value={this.state.order.senderAddress.city}
+                                        inputProps={{
+                                            name: 'senderCity',
+                                            id: 'senderCity-id',
+                                        }}
+                                        onChange={this.senderCityChanged}
+                                    >
+                                        {this.state.order.senderAddress.region.city.map(city => {
+                                            return (<MenuItem value={city._name} key={city._name}>{city._name}</MenuItem>)
+                                        })}
+                                    </Select>
+                                </FormControl>
+
                                 <FormControl margin="normal" required fullWidth>
                                     <InputLabel htmlFor="password">Password</InputLabel>
                                     <Input name="password" type="password" id="password" autoComplete="current-password"
@@ -154,8 +211,8 @@ class RegisterComponent extends React.Component {
     }
 }
 
-RegisterComponent.propTypes = {
+AddOrderComponent.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(RegisterComponent)
+export default withStyles(styles)(AddOrderComponent)

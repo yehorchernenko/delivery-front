@@ -76,7 +76,9 @@ class NavigationBarComponent extends React.Component {
                             <MenuItem onClick={this.handleMenuClose}>
                                 <Link to="/orders/search">Search</Link>
                             </MenuItem>
-                            <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
+                            <MenuItem onClick={this.handleMenuClose}>
+                                <Link to="/orders/add">Add order</Link>
+                            </MenuItem>
                             <MenuItem onClick={this.handleMenuClose}>Logout</MenuItem>
                         </Menu>
                         <Typography variant="h6" color="inherit" className={classes.grow}>
