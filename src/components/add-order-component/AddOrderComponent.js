@@ -18,6 +18,7 @@ import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
 
 const update = require('react-addons-update');
 const authService = require('../../services/AuthService').authService;
+const userService = require('../../services/UserService').userService;
 const cities = require('../../utils/cities');
 
 const styles = theme => ({
@@ -81,6 +82,7 @@ class AddOrderComponent extends React.Component {
                     address: ""
                 }
             },
+            users: [],
             user: {
                 email: '',
                 password: '',
@@ -90,14 +92,15 @@ class AddOrderComponent extends React.Component {
         };
     }
 
-    handleInputChange = (event) => {
-        const value = event.target.value;
-        const name = event.target.id;
+    componentDidMount() {
+        let state = this.state;
 
-        const newState = update(this.state, {
-            user: {[name]: {$set: value}}
+        userService.list().then(response => {
+            state.users = response.data;
+            this.setState(state);
+        }).catch(error => {
+            this.errorToast(error.message);
         });
-        this.setState(newState);
     };
 
     onSubmitTouched = async (event) => {
@@ -154,6 +157,13 @@ class AddOrderComponent extends React.Component {
         this.setState(state);
     };
 
+    handleReceiverSelection = event => {
+        let state = this.state;
+        state.user = event.target.value;
+
+        this.setState(state);
+    };
+
     render() {
         const {classes} = this.props;
 
@@ -173,6 +183,7 @@ class AddOrderComponent extends React.Component {
                                 Sign up
                             </Typography>
                             <form className={classes.form} onSubmit={this.onSubmitTouched}>
+    /*Sender*/
                                 <FormControl margin="normal" required fullWidth>
                                     <InputLabel htmlFor="senderRegion">Sender region:</InputLabel>
                                     <Select
@@ -208,7 +219,7 @@ class AddOrderComponent extends React.Component {
                                     <Input name="senderAddressDetail" type="text" id="senderAddressDetail"
                                            value={this.state.order.senderAddress.address} onChange={this.senderAddressChanged}/>
                                 </FormControl>
-
+/*Receiver*/
                                 <FormControl margin="normal" required fullWidth>
                                     <InputLabel htmlFor="receiverRegion">Receiver region:</InputLabel>
                                     <Select
@@ -244,16 +255,21 @@ class AddOrderComponent extends React.Component {
                                     <Input name="receiverAddressDetail" type="text" id="senderAddressDetail"
                                            value={this.state.order.receiverAddress.address} onChange={this.receiverAddressChanged}/>
                                 </FormControl>
-
+    /*Users*/
                                 <FormControl margin="normal" required fullWidth>
-                                    <InputLabel htmlFor="phone">Phone number</InputLabel>
-                                    <Input name="phone" type="phone" id="phone" value={this.state.user.phone}
-                                           onChange={this.handleInputChange}/>
-                                </FormControl>
-                                <FormControl margin="normal" required fullWidth>
-                                    <InputLabel htmlFor="fullName">Full name</InputLabel>
-                                    <Input name="fullName" type="text" id="fullName" value={this.state.user.fullName}
-                                           onChange={this.handleInputChange}/>
+                                    <InputLabel htmlFor="receiver">Receiver</InputLabel>
+                                    <Select
+                                        value={this.state.user}
+                                        inputProps={{
+                                            name: 'receiver',
+                                            id: 'receiver-id',
+                                        }}
+                                        onChange={this.handleReceiverSelection}
+                                    >
+                                        {this.state.users.map(user => {
+                                            return (<MenuItem value={user} key={user._id}>{user.fullName}</MenuItem>)
+                                        })}
+                                    </Select>
                                 </FormControl>
                                 <Button
                                     type="submit"

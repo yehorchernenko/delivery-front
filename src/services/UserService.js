@@ -3,7 +3,8 @@ import axios from 'axios'
 
 export const userService = {
     edit,
-    get
+    get,
+    list
 };
 
 async function edit(user) {
@@ -22,6 +23,17 @@ async function get(id) {
     const result = await axios( {
         method: 'get',
         url: `${Global.host}/api/users/${id}`,
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    });
+    return result
+}
+
+async function list() {
+    const result = await axios( {
+        method: 'get',
+        url: `${Global.host}/api/users/`,
         headers: {
             'Content-Type': 'application/json',
         }

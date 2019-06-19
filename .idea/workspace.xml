@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6b2306f4-c947-405f-8946-f3767965cc87" name="Default" comment="Add order component">
-      <change afterPath="$PROJECT_DIR$/src/utils/cities.json" afterDir="false" />
+    <list default="true" id="6b2306f4-c947-405f-8946-f3767965cc87" name="Default" comment="Finished city selection pickers">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/add-order-component/AddOrderComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/add-order-component/AddOrderComponent.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/navigation-bar/NavigationBarComponent.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation-bar/NavigationBarComponent.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/UserService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/UserService.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,6 +17,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/services/UserService.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="9" column="27" lean-forward="true" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+              <folding>
+                <element signature="e#0#31#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/search-order/SearchOrderComponent.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -46,8 +56,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/add-order-component/AddOrderComponent.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
-              <caret line="174" column="79" selection-start-line="174" selection-start-column="79" selection-end-line="174" selection-end-column="79" />
+            <state relative-caret-position="256">
+              <caret line="282" column="46" selection-start-line="282" selection-start-column="46" selection-end-line="282" selection-end-column="46" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -59,7 +69,7 @@
         <entry file="file://$PROJECT_DIR$/src/utils/cities.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="199">
-              <caret line="85" column="31" lean-forward="true" selection-start-line="85" selection-start-column="31" selection-end-line="85" selection-end-column="31" />
+              <caret line="85" column="7" selection-start-line="85" selection-start-column="7" selection-end-line="87" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -100,20 +110,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/register/RegisterComponent.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="15" column="23" selection-end-line="160" selection-end-column="52" />
+            <state relative-caret-position="186">
+              <caret line="80" selection-start-line="80" selection-end-line="83" selection-end-column="32" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/services/OrderService.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="501">
-              <caret line="32" column="1" selection-start-line="32" selection-start-column="1" selection-end-line="32" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -149,6 +150,7 @@
       <find>auth</find>
       <find>Redirect</find>
       <find>_</find>
+      <find>update</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -173,7 +175,6 @@
         <option value="$PROJECT_DIR$/src/services/OrderService.js" />
         <option value="$PROJECT_DIR$/src/components/main-page-component/MainPageComponent.js" />
         <option value="$PROJECT_DIR$/src/global.js" />
-        <option value="$PROJECT_DIR$/src/services/UserService.js" />
         <option value="$PROJECT_DIR$/src/components/search-order/SearchOrderComponent.js" />
         <option value="$PROJECT_DIR$/src/components/OrderDetailComponent/OrderDetailComponent.js" />
         <option value="$PROJECT_DIR$/src/views/OrderDetailView.js" />
@@ -182,6 +183,7 @@
         <option value="$PROJECT_DIR$/src/utils/cities.json" />
         <option value="$PROJECT_DIR$/src/App.js" />
         <option value="$PROJECT_DIR$/src/components/navigation-bar/NavigationBarComponent.js" />
+        <option value="$PROJECT_DIR$/src/services/UserService.js" />
         <option value="$PROJECT_DIR$/src/components/add-order-component/AddOrderComponent.js" />
       </list>
     </option>
@@ -234,6 +236,13 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="navigation-bar" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="delivery-front" type="b2602c69:ProjectViewProjectNode" />
+              <item name="delivery-front" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="register" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="delivery-front" type="b2602c69:ProjectViewProjectNode" />
@@ -341,7 +350,7 @@
       <workItem from="1560190719920" duration="5715000" />
       <workItem from="1560433046216" duration="318000" />
       <workItem from="1560541908735" duration="349000" />
-      <workItem from="1560672380000" duration="15925000" />
+      <workItem from="1560672380000" duration="19390000" />
     </task>
     <task id="LOCAL-00001" summary="Added app bar to start page">
       <created>1556697346292</created>
@@ -434,11 +443,25 @@
       <option name="project" value="LOCAL" />
       <updated>1560836531199</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Added city selection pickers">
+      <created>1560886638090</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1560886638091</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Finished city selection pickers">
+      <created>1560969100130</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1560969100131</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="73841000" />
+    <option name="totallyTimeSpent" value="77306000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1614" height="1027" extended-state="0" />
@@ -450,14 +473,14 @@
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.04222222" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.24" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.04222222" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.21475054" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.21444444" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -501,7 +524,9 @@
     <MESSAGE value="Finished order info page" />
     <MESSAGE value="Added order detail from my profile" />
     <MESSAGE value="Add order component" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add order component" />
+    <MESSAGE value="Added city selection pickers" />
+    <MESSAGE value="Finished city selection pickers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finished city selection pickers" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/gloabl.js" />
@@ -572,16 +597,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/services/UserService.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="23" column="41" selection-start-line="23" selection-start-column="41" selection-end-line="23" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/services/OrderService.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="501">
@@ -619,16 +634,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/register/RegisterComponent.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="15" column="23" selection-end-line="160" selection-end-column="52" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="534">
@@ -646,13 +651,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/cities.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="85" column="31" lean-forward="true" selection-start-line="85" selection-start-column="31" selection-end-line="85" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/user-profile/UserPofileComponent.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2448">
@@ -663,10 +661,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/register/RegisterComponent.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="80" selection-start-line="80" selection-end-line="83" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/cities.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="85" column="7" selection-start-line="85" selection-start-column="7" selection-end-line="87" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/services/UserService.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="9" column="27" lean-forward="true" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/add-order-component/AddOrderComponent.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="174" column="79" selection-start-line="174" selection-start-column="79" selection-end-line="174" selection-end-column="79" />
+        <state relative-caret-position="256">
+          <caret line="282" column="46" selection-start-line="282" selection-start-column="46" selection-end-line="282" selection-end-column="46" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
