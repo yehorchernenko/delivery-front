@@ -72,7 +72,13 @@ class AddOrderComponent extends React.Component {
             order: {
                 senderAddress: {
                     region: {city: []},
-                    city: ""
+                    city: "",
+                    address: ""
+                },
+                receiverAddress: {
+                    region: {city: []},
+                    city: "",
+                    address: ""
                 }
             },
             user: {
@@ -107,24 +113,45 @@ class AddOrderComponent extends React.Component {
     };
 
     senderRegionChanged = event => {
-        this.setState({
-            order: {
-                senderAddress: {
-                    region: event.target.value
-                }
-            }
-        })
+        let state = this.state;
+        state.order.senderAddress.region = event.target.value;
+
+        this.setState(state);
     };
 
     senderCityChanged = event => {
-        this.setState({
-            order: {
-                senderAddress: {
-                    region: this.state.order.senderAddress.region,
-                    city: event.target.value
-                }
-            }
-        })
+        let state = this.state;
+        state.order.senderAddress.city = event.target.value;
+
+        this.setState(state);
+    };
+
+    receiverRegionChanged = event => {
+        let state = this.state;
+        state.order.receiverAddress.region = event.target.value;
+
+        this.setState(state);
+    };
+
+    receiverCityChanged = event => {
+        let state = this.state;
+        state.order.receiverAddress.city = event.target.value;
+
+        this.setState(state);
+    };
+
+    senderAddressChanged = event => {
+        let state = this.state;
+        state.order.senderAddress.address = event.target.value;
+
+        this.setState(state);
+    };
+
+    receiverAddressChanged = event => {
+        let state = this.state;
+        state.order.receiverAddress.address = event.target.value;
+
+        this.setState(state);
     };
 
     render() {
@@ -176,12 +203,48 @@ class AddOrderComponent extends React.Component {
                                         })}
                                     </Select>
                                 </FormControl>
+                                <FormControl margin="normal" required fullWidth>
+                                    <InputLabel htmlFor="senderAddressDetail">Detail:</InputLabel>
+                                    <Input name="senderAddressDetail" type="text" id="senderAddressDetail"
+                                           value={this.state.order.senderAddress.address} onChange={this.senderAddressChanged}/>
+                                </FormControl>
 
                                 <FormControl margin="normal" required fullWidth>
-                                    <InputLabel htmlFor="password">Password</InputLabel>
-                                    <Input name="password" type="password" id="password" autoComplete="current-password"
-                                           value={this.state.user.password} onChange={this.handleInputChange}/>
+                                    <InputLabel htmlFor="receiverRegion">Receiver region:</InputLabel>
+                                    <Select
+                                        value={this.state.order.receiverAddress.region}
+                                        inputProps={{
+                                            name: 'receiverRegion',
+                                            id: 'receiverRegion-id',
+                                        }}
+                                        onChange={this.receiverRegionChanged}
+                                    >
+                                        {cities.regions.map(region => {
+                                            return (<MenuItem value={region} key={region._name}>{region._name}</MenuItem>)
+                                        })}
+                                    </Select>
                                 </FormControl>
+                                <FormControl margin="normal" required fullWidth>
+                                    <InputLabel htmlFor="receiverCity">Sender city:</InputLabel>
+                                    <Select
+                                        value={this.state.order.receiverAddress.city}
+                                        inputProps={{
+                                            name: 'receiverCity',
+                                            id: 'receiverCity-id',
+                                        }}
+                                        onChange={this.receiverCityChanged}
+                                    >
+                                        {this.state.order.receiverAddress.region.city.map(city => {
+                                            return (<MenuItem value={city._name} key={city._name}>{city._name}</MenuItem>)
+                                        })}
+                                    </Select>
+                                </FormControl>
+                                <FormControl margin="normal" required fullWidth>
+                                    <InputLabel htmlFor="receiverAddressDetail">Detail:</InputLabel>
+                                    <Input name="receiverAddressDetail" type="text" id="senderAddressDetail"
+                                           value={this.state.order.receiverAddress.address} onChange={this.receiverAddressChanged}/>
+                                </FormControl>
+
                                 <FormControl margin="normal" required fullWidth>
                                     <InputLabel htmlFor="phone">Phone number</InputLabel>
                                     <Input name="phone" type="phone" id="phone" value={this.state.user.phone}
