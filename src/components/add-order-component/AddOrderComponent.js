@@ -1,12 +1,10 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -16,9 +14,9 @@ import NavigationBarComponent from '../navigation-bar/NavigationBarComponent';
 import Select from '@material-ui/core/Select';
 import MenuItem from "@material-ui/core/es/MenuItem/MenuItem";
 
-const update = require('react-addons-update');
 const authService = require('../../services/AuthService').authService;
 const userService = require('../../services/UserService').userService;
+const orderService = require('../../services/OrderService').orderService;
 const cities = require('../../utils/cities');
 
 const styles = theme => ({
@@ -69,7 +67,6 @@ class AddOrderComponent extends React.Component {
         super(props);
 
         this.state = {
-            isRegistered: false,
             order: {
                 senderAddress: {
                     region: {city: []},
@@ -83,20 +80,22 @@ class AddOrderComponent extends React.Component {
                 }
             },
             users: [],
-            user: {
-                email: '',
-                password: '',
-                fullName: '',
-                phone: ''
-            }
+            user: {}
         };
     }
 
     componentDidMount() {
-        let state = this.state;
-
         userService.list().then(response => {
+            let state = this.state;
             state.users = response.data;
+            this.setState(state);
+        }).catch(error => {
+            this.errorToast(error.message);
+        });
+
+        authService.me().then(response => {
+            let state = this.state;
+            state.me = response.data;
             this.setState(state);
         }).catch(error => {
             this.errorToast(error.message);
@@ -106,12 +105,13 @@ class AddOrderComponent extends React.Component {
     onSubmitTouched = async (event) => {
         event.preventDefault();
 
-        authService.register(this.state.user).then(user => {
-            this.successToast('You have successfully registered\nLog in now!');
-            this.setState({isRegistered: true})
+        let body = this.state.order;
+        body.receiver = this.state.user._id;
+
+        orderService.add(body).then(response => {
+            this.successToast("Order successfully added.")
         }).catch(error => {
-            this.errorToast(error.message);
-            this.setState({isRegistered: false})
+            this.errorToast(error.message)
         });
     };
 
@@ -176,11 +176,8 @@ class AddOrderComponent extends React.Component {
                     <main className={classes.main}>
                         <CssBaseline/>
                         <Paper className={classes.paper}>
-                            <Avatar className={classes.avatar}>
-                                <LockOutlinedIcon/>
-                            </Avatar>
                             <Typography component="h1" variant="h5">
-                                Sign up
+                                Create new order
                             </Typography>
                             <form className={classes.form} onSubmit={this.onSubmitTouched}>
     /*Sender*/
@@ -278,10 +275,9 @@ class AddOrderComponent extends React.Component {
                                     color="primary"
                                     className={classes.submit}
                                 >
-                                    Sign Up
+                                    Create new order
                                 </Button>
                             </form>
-                            <Link to="/login">Already have account? Login</Link>
                         </Paper>
                     </main>
                 </div>

@@ -3,7 +3,8 @@ import axios from 'axios'
 
 export const orderService = {
     my,
-    byID
+    byID,
+    add
 };
 
 async function my() {
@@ -27,6 +28,21 @@ async function byID(ID) {
         url: `${Global.host}/api/order/byID/${ID}`,
         headers: {
             'Content-Type': 'application/json'
+        }
+    });
+    return result
+}
+
+async function add(body) {
+    const token = localStorage.getItem('token');
+
+    const result = await axios( {
+        method: 'post',
+        url: `${Global.host}/api/order/add`,
+        data: body,
+        headers: {
+            'Content-Type': 'application/json',
+            'x-access-token': token
         }
     });
     return result
